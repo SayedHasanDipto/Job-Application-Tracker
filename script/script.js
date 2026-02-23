@@ -48,3 +48,17 @@ function toggleButton(id) {
     selectedButton.classList.remove('btn-primary-content', 'text-black');
     selectedButton.classList.add('btn-info', 'text-white');
 }
+
+
+mainContainer.addEventListener('click', function (event) {
+    const parentNode = event.target.parentNode.parentNode.parentNode;
+    const jobHeader = parentNode.querySelector('.job-header').innerText;
+    const jobDiscription = parentNode.querySelector('.job-discription').innerText;
+    const requirment = parentNode.querySelector('.requirment').innerText;
+    const appliedButton = parentNode.querySelector('.applied-button').innerText;
+    const recomend = parentNode.querySelector('.recomend').innerText;
+
+
+
+    console.log(jobHeader, jobDiscription, requirment, appliedButton, recomend);
+})
