@@ -47,30 +47,36 @@ function toggleButton(id) {
     }
     else if (id === 'rejecte-filter-button') {
         jobContainer.classList.add('hidden');
-        filSection.classList.remove('hidden'); // আপনার এখানে 'hidden' add করা ছিল, তাই দেখা যাচ্ছিল না
+        filSection.classList.remove('hidden');
         createReject();
     }
 }
-
 // button click event listener
 mainContainer.addEventListener('click', function (event) {
     const interviewBtn = event.target.closest('.interview-button');
     const rejectBtn = event.target.closest('.reject-btn');
 
-    // INTERVIEW BUTTON
+    // --- INTERVIEW BUTTON LOGIC ---
     if (interviewBtn) {
         const parentNode = interviewBtn.closest('.space-y-5');
         const jobHeader = parentNode.querySelector('.job-header').innerText.trim();
-        const jobRequirment = parentNode.querySelector('.requirment').innerText.trim();
         const jobDiscibtion = parentNode.querySelector('.job-discription').innerText.trim();
+        const jobRequirment = parentNode.querySelector('.requirment').innerText.trim();
         const jobRecomend = parentNode.querySelector('.recomend').innerText.trim();
 
-        parentNode.querySelector('.applied-button').innerText = 'Applied';
+        // চেক করছি কার্ডটি কি অলরেডি ইন্টারভিউ লিস্টে আছে?
+        const existsInInterview = interviewList.find(item => item.jobHeader === jobHeader);
 
-        rejectedList = rejectedList.filter(item => item.jobHeader !== jobHeader);
-        const exists = interviewList.find(item => item.jobHeader === jobHeader);
-
-        if (!exists) {
+        if (existsInInterview) {
+            // ১. ইন্টারভিউ থেকে বাদ দিয়ে All Section এ ফেরত পাঠানো (Undo)
+            interviewList = interviewList.filter(item => item.jobHeader !== jobHeader);
+            restoreToAllSection(jobHeader, jobDiscibtion, jobRequirment, jobRecomend);
+            parentNode.remove();
+        }
+        else {
+            // ২. নতুন করে ইন্টারভিউ লিস্টে অ্যাড করা
+            parentNode.remove();
+            rejectedList = rejectedList.filter(item => item.jobHeader !== jobHeader);
             interviewList.push({
                 jobHeader, jobDiscibtion, jobRequirment, jobRecomend,
                 appliedButton: 'Applied'
@@ -79,7 +85,7 @@ mainContainer.addEventListener('click', function (event) {
         calculateJobCount();
     }
 
-    // REJECT BUTTON
+    // --- REJECT BUTTON LOGIC ---
     else if (rejectBtn) {
         const parentNode = rejectBtn.closest('.space-y-5');
         const jobHeader = parentNode.querySelector('.job-header').innerText.trim();
@@ -87,12 +93,19 @@ mainContainer.addEventListener('click', function (event) {
         const jobRequirment = parentNode.querySelector('.requirment').innerText.trim();
         const jobRecomend = parentNode.querySelector('.recomend').innerText.trim();
 
-        parentNode.querySelector('.applied-button').innerText = 'Rejected';
+        // চেক করছি কার্ডটি কি অলরেডি রিজেক্ট লিস্টে আছে?
+        const existsInReject = rejectedList.find(item => item.jobHeader === jobHeader);
 
-        interviewList = interviewList.filter(item => item.jobHeader !== jobHeader);
-        const exists = rejectedList.find(item => item.jobHeader === jobHeader);
-
-        if (!exists) {
+        if (existsInReject) {
+            // ১. রিজেক্ট থেকে বাদ দিয়ে All Section এ ফেরত পাঠানো (Undo)
+            rejectedList = rejectedList.filter(item => item.jobHeader !== jobHeader);
+            restoreToAllSection(jobHeader, jobDiscibtion, jobRequirment, jobRecomend);
+            parentNode.remove();
+        }
+        else {
+            // ২. নতুন করে রিজেক্ট লিস্টে অ্যাড করা
+            parentNode.remove();
+            interviewList = interviewList.filter(item => item.jobHeader !== jobHeader);
             rejectedList.push({
                 jobHeader, jobDiscibtion, jobRequirment, jobRecomend,
                 appliedButton: 'Rejected'
@@ -101,6 +114,28 @@ mainContainer.addEventListener('click', function (event) {
         calculateJobCount();
     }
 });
+
+// কার্ডটি পুনরায় All Jobs সেকশনে ফিরিয়ে দেওয়ার জন্য একটি হেল্পার ফাংশন
+function restoreToAllSection(header, desc, req, rec) {
+    const div = document.createElement('div');
+    div.className = "space-y-5 p-6 shadow-sm rounded-lg border";
+    div.innerHTML = `
+        <div class="flex justify-between">
+            <div>
+                <h1 class="text-[#002C5C] text-lg font-semibold job-header">${header}</h1>
+                <p class="text-[#64748B] job-discription">${desc}</p>
+            </div>
+        </div>
+        <p class="text-[#64748B] requirment">${req}</p>
+        <button class="btn btn-soft btn-primary applied-button">Not Applied</button>
+        <p class="text-[#323B49] mb-5 recomend">${rec}</p>
+        <div class="flex gap-5">
+            <button class="btn btn-success btn-outline interview-button">INTERVIEW</button>
+            <button class="btn btn-outline btn-error reject-btn">REJECTED</button>
+        </div>
+    `;
+    jobContainer.appendChild(div);
+}
 
 function createInterview() {
     filSection.innerHTML = '';
