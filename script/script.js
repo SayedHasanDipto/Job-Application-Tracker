@@ -1,24 +1,17 @@
 console.log('script.js');
-
 let interviewList = [];
 let rejectedList = [];
-
 let totalJobCount = document.getElementById('total-count');
 let interviewJobCount = document.getElementById('interview-count');
 let rejectedJobCount = document.getElementById('reject-count');
-
 const jobContainer = document.getElementById('job-container');
 const mainContainer = document.querySelector('main');
 const filSection = document.getElementById('filtered-section');
-
 const allFiltterButton = document.getElementById('all-filter-button');
 const interviewFiltterButton = document.getElementById('interview-filter-button');
 const rejectedFiltterButton = document.getElementById('rejecte-filter-button');
-
 // count function
 function calculateJobCount() {
-
-
     const currentJobs = jobContainer.children.length;
     totalJobCount.innerText = currentJobs;
     interviewJobCount.innerText = interviewList.length;
@@ -33,9 +26,6 @@ function calculateJobCount() {
     else if (rejectedFiltterButton.classList.contains('btn-info')) {
         availableCountText.innerText = rejectedList.length;
     }
-
-
-
     const jobCount = jobContainer.children.length;
     totalJobCount.innerText = jobCount;
     interviewJobCount.innerText = interviewList.length;
@@ -52,7 +42,6 @@ function calculateJobCount() {
 }
 
 // List khali check
-
 function checkEmptyState(list) {
     const noDataContainer = document.getElementById('no-data-container');
 
@@ -65,6 +54,7 @@ function checkEmptyState(list) {
         filSection.classList.remove('hidden');
     }
 }
+
 // filterbutton
 function toggleButton(id) {
     allFiltterButton.classList.remove('btn-info', 'text-white');
@@ -117,7 +107,7 @@ mainContainer.addEventListener('click', function (event) {
     const rejectBtn = event.target.closest('.reject-btn');
     const deleteBtn = event.target.closest('.delete-btn');
 
-    // --- DELETE BUTTON LOGIC ---
+    // delete button
     if (deleteBtn) {
         const parentNode = deleteBtn.closest('.space-y-5');
         const jobHeader = parentNode.querySelector('.job-header').innerText.trim();
@@ -142,7 +132,7 @@ mainContainer.addEventListener('click', function (event) {
         calculateJobCount();
     }
 
-    // --- INTERVIEW BUTTON LOGIC ---
+    // interview button
     else if (interviewBtn) {
         const parentNode = interviewBtn.closest('.space-y-5');
         const jobHeader = parentNode.querySelector('.job-header').innerText.trim();
@@ -168,7 +158,7 @@ mainContainer.addEventListener('click', function (event) {
         calculateJobCount();
     }
 
-    // --- REJECT BUTTON LOGIC ---
+    // reject button
     else if (rejectBtn) {
         const parentNode = rejectBtn.closest('.space-y-5');
         const jobHeader = parentNode.querySelector('.job-header').innerText.trim();
