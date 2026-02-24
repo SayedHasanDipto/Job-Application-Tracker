@@ -64,17 +64,14 @@ mainContainer.addEventListener('click', function (event) {
         const jobRequirment = parentNode.querySelector('.requirment').innerText.trim();
         const jobRecomend = parentNode.querySelector('.recomend').innerText.trim();
 
-        // চেক করছি কার্ডটি কি অলরেডি ইন্টারভিউ লিস্টে আছে?
         const existsInInterview = interviewList.find(item => item.jobHeader === jobHeader);
 
         if (existsInInterview) {
-            // ১. ইন্টারভিউ থেকে বাদ দিয়ে All Section এ ফেরত পাঠানো (Undo)
             interviewList = interviewList.filter(item => item.jobHeader !== jobHeader);
             restoreToAllSection(jobHeader, jobDiscibtion, jobRequirment, jobRecomend);
             parentNode.remove();
         }
         else {
-            // ২. নতুন করে ইন্টারভিউ লিস্টে অ্যাড করা
             parentNode.remove();
             rejectedList = rejectedList.filter(item => item.jobHeader !== jobHeader);
             interviewList.push({
@@ -93,17 +90,14 @@ mainContainer.addEventListener('click', function (event) {
         const jobRequirment = parentNode.querySelector('.requirment').innerText.trim();
         const jobRecomend = parentNode.querySelector('.recomend').innerText.trim();
 
-        // চেক করছি কার্ডটি কি অলরেডি রিজেক্ট লিস্টে আছে?
         const existsInReject = rejectedList.find(item => item.jobHeader === jobHeader);
 
         if (existsInReject) {
-            // ১. রিজেক্ট থেকে বাদ দিয়ে All Section এ ফেরত পাঠানো (Undo)
             rejectedList = rejectedList.filter(item => item.jobHeader !== jobHeader);
             restoreToAllSection(jobHeader, jobDiscibtion, jobRequirment, jobRecomend);
             parentNode.remove();
         }
         else {
-            // ২. নতুন করে রিজেক্ট লিস্টে অ্যাড করা
             parentNode.remove();
             interviewList = interviewList.filter(item => item.jobHeader !== jobHeader);
             rejectedList.push({
@@ -115,10 +109,9 @@ mainContainer.addEventListener('click', function (event) {
     }
 });
 
-// কার্ডটি পুনরায় All Jobs সেকশনে ফিরিয়ে দেওয়ার জন্য একটি হেল্পার ফাংশন
 function restoreToAllSection(header, desc, req, rec) {
     const div = document.createElement('div');
-    div.className = "space-y-5 p-6 shadow-sm rounded-lg border";
+    div.className = "space-y-5 p-6 shadow-sm rounded-lg border border-gray-200";
     div.innerHTML = `
         <div class="flex justify-between">
             <div>
@@ -141,7 +134,7 @@ function createInterview() {
     filSection.innerHTML = '';
     interviewList.forEach(interview => {
         const div = document.createElement('div');
-        div.className = "space-y-5 p-6 shadow-sm rounded-lg border";
+        div.className = "space-y-5 p-6 shadow-sm rounded-lg border border-gray-200";
         div.innerHTML = `
             <div class="flex justify-between">
                 <div>
@@ -165,7 +158,7 @@ function createReject() {
     filSection.innerHTML = '';
     rejectedList.forEach(reject => {
         const div = document.createElement('div');
-        div.className = "space-y-5 p-6 shadow-sm rounded-lg border";
+        div.className = "space-y-5 p-6 shadow-sm rounded-lg border border-gray-200";
         div.innerHTML = `
             <div class="flex justify-between">
                 <div>
