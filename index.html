@@ -13,10 +13,10 @@
 </head>
 
 <body>
-    <header class="mt-[3.75rem] container mx-auto">
-        <h1 class="text-4xl font-bold text-[#002C5C] leading-8 mb-[1.25rem]">Job Application Tracker</h1>
+    <header class="mt-[3.75rem] max-sm:m-3 w-11/12 mx-auto">
+        <h1 class="text-4xl font-bold text-[#002C5C] leading-8 mb-[1.25rem] max-sm:text-center max-sm:mb-5">Job Application Tracker</h1>
 
-        <div class="grid grid-cols-3 gap-4 mb-8">
+        <div class="grid grid-cols-3 gap-4 mb-8 max-sm:my-[12px]">
             <div class="rounded-md p-5 shadow-md">
                 <h1 class="text-[#323B49] mb-2">Total</h1>
                 <p id="total-count" class="text-[1.5rem] text-[#002C5C] font-bold">0</p>
@@ -34,19 +34,16 @@
         <hr class="text-gray-200 bg-gray-200">
     </header>
 
-    <main class="container mx-auto">
-
+    <main class="w-11/12 mx-auto max-sm:m-3">
         <section>
-            <div class="flex justify-between mt-[1.9rem]">
+            <div class="flex justify-between mt-[1.9rem] max-sm:items-center max-sm:flex-col">
                 <h1 class="text-[1.25rem] font-semibold text-[#002C5C]">Available Jobs</h1>
                 <p class="text-[#64748B]">
                     <span id="available-count">8</span>
                     jobs
                 </p>
             </div>
-
-
-            <div class="my-[1.5rem] flex gap-5">
+            <div class="my-[1.5rem] flex gap-5 max-sm:gap-2 max-sm:justify-center">
                 <button onclick="toggleButton('all-filter-button')" id="all-filter-button"
                     class="btn px-8 py-4 btn-info text-white">All</button>
                 <button onclick="toggleButton('interview-filter-button')" id="interview-filter-button"
@@ -54,8 +51,6 @@
                 <button onclick="toggleButton('rejecte-filter-button')" id="rejecte-filter-button"
                     class="btn px-8 py-4 btn-primary-content text-black">Rejected</button>
             </div>
-
-
             <!-- filtterd seciton -->
             <section id="filtered-section" class="hidden space-y-5 mb-10">
 
@@ -67,16 +62,13 @@
 
             <!-- no data section -->
 
-            <div id="no-data-container"
-                class="hidden p-20 border border-gray-200 rounded-xl mt-5">
+            <div id="no-data-container" class="hidden p-20 border border-gray-200 rounded-xl mt-5">
                 <div class="flex flex-col justify-center items-center space-y-1">
                     <img src="./jobs.png" alt="NojobPng" class="w-24 mb-4">
-                   <h2 class="text-2xl text-[#002C5C] leading-8">No jobs available</h2>
-                   <p class="text-[#64748B] leading-4">Check back soon for new job opportunities</p>
+                    <h2 class="text-2xl text-[#002C5C] leading-8">No jobs available</h2>
+                    <p class="text-[#64748B] leading-4">Check back soon for new job opportunities</p>
                 </div>
             </div>
-
-
         </section>
 
         <section id="job-container" class="space-y-6 mb-10">
@@ -359,85 +351,7 @@
             </div>
 
         </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </main>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <script src="./script/script.js"></script>
 </body>
 
