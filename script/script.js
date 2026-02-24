@@ -17,9 +17,38 @@ const rejectedFiltterButton = document.getElementById('rejecte-filter-button');
 
 // count function
 function calculateJobCount() {
-    totalJobCount.innerText = jobContainer.children.length;
+
+
+    const currentJobs = jobContainer.children.length;
+    totalJobCount.innerText = currentJobs;
     interviewJobCount.innerText = interviewList.length;
     rejectedJobCount.innerText = rejectedList.length;
+    const availableCountText = document.getElementById('available-count');
+    if (allFiltterButton.classList.contains('btn-info')) {
+        availableCountText.innerText = currentJobs;
+    }
+    else if (interviewFiltterButton.classList.contains('btn-info')) {
+        availableCountText.innerText = interviewList.length;
+    }
+    else if (rejectedFiltterButton.classList.contains('btn-info')) {
+        availableCountText.innerText = rejectedList.length;
+    }
+
+
+
+    const jobCount = jobContainer.children.length;
+    totalJobCount.innerText = jobCount;
+    interviewJobCount.innerText = interviewList.length;
+    rejectedJobCount.innerText = rejectedList.length;
+    const noDataContainer = document.getElementById('no-data-container');
+    if (jobCount === 0 && !allFiltterButton.classList.contains('btn-primary-content')) {
+        noDataContainer.classList.remove('hidden');
+        jobContainer.classList.add('hidden');
+    }
+    else if (jobCount > 0 && !allFiltterButton.classList.contains('btn-primary-content')) {
+        noDataContainer.classList.add('hidden');
+        jobContainer.classList.remove('hidden');
+    }
 }
 
 // List khali check
@@ -36,7 +65,6 @@ function checkEmptyState(list) {
         filSection.classList.remove('hidden');
     }
 }
-
 // filterbutton
 function toggleButton(id) {
     allFiltterButton.classList.remove('btn-info', 'text-white');
@@ -51,26 +79,43 @@ function toggleButton(id) {
     selectedButton.classList.remove('btn-primary-content', 'text-black');
     selectedButton.classList.add('btn-info', 'text-white');
 
+    const noData = document.getElementById('no-data-container');
+
     if (id === 'all-filter-button') {
         jobContainer.classList.remove('hidden');
         filSection.classList.add('hidden');
+
+        if (jobContainer.children.length > 0) {
+            noData.classList.add('hidden');
+        } else {
+            noData.classList.remove('hidden');
+            jobContainer.classList.add('hidden');
+        }
     }
     else if (id === 'interview-filter-button') {
         jobContainer.classList.add('hidden');
         filSection.classList.remove('hidden');
         createInterview();
+
+        if (interviewList.length === 0) noData.classList.remove('hidden');
+        else noData.classList.add('hidden');
     }
     else if (id === 'rejecte-filter-button') {
         jobContainer.classList.add('hidden');
         filSection.classList.remove('hidden');
         createReject();
+
+        if (rejectedList.length === 0) noData.classList.remove('hidden');
+        else noData.classList.add('hidden');
     }
 }
+
+
 // button click event listener
 mainContainer.addEventListener('click', function (event) {
     const interviewBtn = event.target.closest('.interview-button');
     const rejectBtn = event.target.closest('.reject-btn');
-    const deleteBtn = event.target.closest('.delete-btn'); 
+    const deleteBtn = event.target.closest('.delete-btn');
 
     // --- DELETE BUTTON LOGIC ---
     if (deleteBtn) {
