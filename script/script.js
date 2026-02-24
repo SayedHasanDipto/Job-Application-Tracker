@@ -22,6 +22,21 @@ function calculateJobCount() {
     rejectedJobCount.innerText = rejectedList.length;
 }
 
+// List khali check
+
+function checkEmptyState(list) {
+    const noDataContainer = document.getElementById('no-data-container');
+
+    if (list.length === 0) {
+        noDataContainer.classList.remove('hidden');
+        filSection.classList.add('hidden');
+    } else {
+        noDataContainer.classList.remove('hidden');
+        noDataContainer.classList.add('hidden');
+        filSection.classList.remove('hidden');
+    }
+}
+
 // filterbutton
 function toggleButton(id) {
     allFiltterButton.classList.remove('btn-info', 'text-white');
@@ -55,9 +70,35 @@ function toggleButton(id) {
 mainContainer.addEventListener('click', function (event) {
     const interviewBtn = event.target.closest('.interview-button');
     const rejectBtn = event.target.closest('.reject-btn');
+    const deleteBtn = event.target.closest('.delete-btn'); 
+
+    // --- DELETE BUTTON LOGIC ---
+    if (deleteBtn) {
+        const parentNode = deleteBtn.closest('.space-y-5');
+        const jobHeader = parentNode.querySelector('.job-header').innerText.trim();
+        const jobDiscibtion = parentNode.querySelector('.job-discription').innerText.trim();
+        const jobRequirment = parentNode.querySelector('.requirment').innerText.trim();
+        const jobRecomend = parentNode.querySelector('.recomend').innerText.trim();
+
+        const inInterview = interviewList.find(item => item.jobHeader === jobHeader);
+        const inReject = rejectedList.find(item => item.jobHeader === jobHeader);
+
+        if (inInterview || inReject) {
+            interviewList = interviewList.filter(item => item.jobHeader !== jobHeader);
+            rejectedList = rejectedList.filter(item => item.jobHeader !== jobHeader);
+
+            restoreToAllSection(jobHeader, jobDiscibtion, jobRequirment, jobRecomend);
+            parentNode.remove();
+        }
+        else {
+            parentNode.remove();
+        }
+
+        calculateJobCount();
+    }
 
     // --- INTERVIEW BUTTON LOGIC ---
-    if (interviewBtn) {
+    else if (interviewBtn) {
         const parentNode = interviewBtn.closest('.space-y-5');
         const jobHeader = parentNode.querySelector('.job-header').innerText.trim();
         const jobDiscibtion = parentNode.querySelector('.job-discription').innerText.trim();
@@ -118,6 +159,9 @@ function restoreToAllSection(header, desc, req, rec) {
                 <h1 class="text-[#002C5C] text-lg font-semibold job-header">${header}</h1>
                 <p class="text-[#64748B] job-discription">${desc}</p>
             </div>
+            <div class="delete-btn cursor-pointer">
+                        <i class="fa-regular fa-trash-can"></i>
+            </div>
         </div>
         <p class="text-[#64748B] requirment">${req}</p>
         <button class="btn btn-soft btn-primary applied-button">Not Applied</button>
@@ -130,7 +174,12 @@ function restoreToAllSection(header, desc, req, rec) {
     jobContainer.appendChild(div);
 }
 
+// Interview Section
+
 function createInterview() {
+    checkEmptyState(interviewList);
+    if (interviewList.length === 0) return;
+    filSection.innerHTML = '';
     filSection.innerHTML = '';
     interviewList.forEach(interview => {
         const div = document.createElement('div');
@@ -141,9 +190,12 @@ function createInterview() {
                     <h1 class="text-[#002C5C] text-lg font-semibold job-header">${interview.jobHeader}</h1>
                     <p class="text-[#64748B] job-discription">${interview.jobDiscibtion}</p>
                 </div>
+                <div class="delete-btn cursor-pointer">
+                        <i class="fa-regular fa-trash-can"></i>
+            </div>
             </div>
             <p class="text-[#64748B] requirment">${interview.jobRequirment}</p>
-            <button class="btn btn-soft btn-primary applied-button">${interview.appliedButton}</button>
+            <button class="btn btn-active btn-success text-green-800 applied-button">${interview.appliedButton}</button>
             <p class="text-[#323B49] mb-5 recomend">${interview.jobRecomend}</p>
             <div class="flex gap-5">
                 <button class="btn btn-success btn-outline interview-button">INTERVIEW</button>
@@ -154,7 +206,12 @@ function createInterview() {
     });
 }
 
+// Reject Section
+
 function createReject() {
+    checkEmptyState(rejectedList);
+    if (rejectedList.length === 0) return;
+    filSection.innerHTML = '';
     filSection.innerHTML = '';
     rejectedList.forEach(reject => {
         const div = document.createElement('div');
@@ -165,9 +222,12 @@ function createReject() {
                     <h1 class="text-[#002C5C] text-lg font-semibold job-header">${reject.jobHeader}</h1>
                     <p class="text-[#64748B] job-discription">${reject.jobDiscibtion}</p>
                 </div>
+                <div class="delete-btn cursor-pointer">
+                        <i class="fa-regular fa-trash-can"></i>
+            </div>
             </div>
             <p class="text-[#64748B] requirment">${reject.jobRequirment}</p>
-            <button class="btn btn-soft btn-primary applied-button">${reject.appliedButton}</button>
+            <button class="btn btn-error text-red-800 applied-button">${reject.appliedButton}</button>
             <p class="text-[#323B49] mb-5 recomend">${reject.jobRecomend}</p>
             <div class="flex gap-5">
                 <button class="btn btn-success btn-outline interview-button">INTERVIEW</button>
